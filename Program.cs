@@ -21,6 +21,10 @@ namespace WebAPIExercise
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddJsonFile("myConfig.json", optional: false, reloadOnChange: false);
                 });
     }
 }
