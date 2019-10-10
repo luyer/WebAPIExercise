@@ -38,24 +38,46 @@ namespace WebAPIExercise.Controllers
 
 
         [HttpPost]
-        public List<Post> Add(  ){        
+        public Post Add( [FromBody] Post newPost ){        
             int newID = this.posts.Count+1;
-            Post nuevoPost = new Post {Id = newID, Title = "Post " + newID , Body = "body "+ newID,   Autor = "todos" };
+            Post nuevoPost = new Post {Id = newID, Title = newPost.Title  , Body = newPost.Body ,  Autor = newPost.Autor };
             this.posts.Add(nuevoPost);
-            return this.posts;
+            foreach (Post post in this.posts){
+                if( post.Id == newID ){
+                    return post;
+                }
+            }
+            return null;
         }
 
         [HttpPut]
-        public string Edit(){        
-            //const string response = ;
-            return "Endpoint Put Edit()";
+        public List<Post> Edit(  [FromBody] Post editedPost ){        
+
+            foreach (Post post in this.posts){
+                if( post.Id == editedPost.Id ){
+                    post.Title = editedPost.Title;
+                    post.Body = editedPost.Body;
+                    //return post;
+                }
+            }
+
+            return this.posts;
+
         }
 
 
-        [HttpDelete]
-        public string Delete(){        
+        [HttpDelete("/[controller]/{id}")]
+        public List<Post> Delete([FromRoute] long id){        
             //const string response = ;
-            return "Endpoint Delete Delete()";
+    
+            foreach (Post post in this.posts){
+                if( post.Id == id ){
+                    this.posts.Remove(post);
+                    return this.posts;
+                }
+            }
+
+            return this.posts;
         }
 
 
