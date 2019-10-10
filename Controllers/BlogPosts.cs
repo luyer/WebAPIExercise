@@ -15,13 +15,13 @@ namespace WebAPIExercise.Controllers
             return "Endpoint Get Index()";
         }
 
- /* 
-        [HttpGet]
+
+        [HttpGet("/[controller]/{id}")]
         public string View( int id  ){        
             //const string response = ;
             return "Endpoint Get Detalle registro";
         }
-*/
+
 
         [HttpPost]
         public string Add(){        

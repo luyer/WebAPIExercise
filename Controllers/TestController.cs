@@ -6,17 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using WebAPIExercise.Models;
 
 namespace WebAPIExercise.Controllers
 {
 
- 
-
- 
     [ApiController]
     [Route("[controller]")]
     public class TestController : ControllerBase
     { 
+
+        private List<Customer> customers;
+
+        public TestController()
+        {
+            this.customers = new List<Customer> {
+                new Customer { Id = 1, FirstName = "steve", Lastname = "Balh", Email = "correo@bla.com"  }
+            };
+        }
+
+
 
         [HttpGet]
         public string Get(){        
