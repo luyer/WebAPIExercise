@@ -30,10 +30,15 @@ namespace WebAPIExercise.Controllers
         }
 
 
-        [HttpGet("/[controller]/{id}")]
-        public string View( int id  ){        
-            //const string response = ;
-            return "Endpoint Get Detalle registro";
+        [HttpGet("/[controller]/[action]/{id}")]
+        [Consumes("application/xml")]  [Produces("application/xml")]
+        public Post View([FromRoute] int id  ){        
+            foreach (Post post in this.posts){
+                if( post.Id == id ){
+                    return post;
+                }
+            }
+            return null;
         }
 
 
