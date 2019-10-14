@@ -23,66 +23,81 @@ namespace WebAPIExercise.Controllers
 
 
         [HttpGet]
-        public List<Post> Index(){        
+        public IActionResult Index(){        
             //const string response = ;
             //return "Endpoint Get Index()";
-            return this.posts;
+            //return this.posts;
+            return Ok(this.posts);
         }
 
 
         [HttpGet("/[controller]/[action]/{id}")]
-        [Consumes("application/xml")]  [Produces("application/xml")]
-        public Post View([FromRoute] int id  ){        
+        [Consumes("application/xml")]  
+        public IActionResult View([FromRoute] int id  ){        
             foreach (Post post in this.posts){
                 if( post.Id == id ){
-                    return post;
+                    return Ok(post);
                 }
             }
-            return null;
+            return BadRequest( new {errorMessage = "el Id pasado no existe" } );
         }
 
 
         [HttpPost]
-        public Post Add( [FromBody] Post newPost ){        
-            int newID = this.posts.Count+1;
-            Post nuevoPost = new Post {Id = newID, Title = newPost.Title  , Body = newPost.Body ,  Autor = newPost.Autor };
-            this.posts.Add(nuevoPost);
-            foreach (Post post in this.posts){
-                if( post.Id == newID ){
-                    return post;
+        public IActionResult Add( [FromBody] Post newPost ){        
+            
+            if( ModelState.IsValid ){
+                int newID = this.posts.Count+1;
+                Post nuevoPost = new Post {Id = newID, Title = newPost.Title  , Body = newPost.Body ,  Autor = newPost.Autor };
+                this.posts.Add(nuevoPost);
+                foreach (Post post in this.posts){
+                    if( post.Id == newID ){
+                        //return post;
+                        //return base.RedirectToRoute();
+                        return Ok(View(newID));
+
+                        
+                    }
                 }
             }
-            return null;
+            return ValidationProblem();
         }
 
         [HttpPut]
-        public List<Post> Edit(  [FromBody] Post editedPost ){        
-
-            foreach (Post post in this.posts){
-                if( post.Id == editedPost.Id ){
-                    post.Title = editedPost.Title;
-                    post.Body = editedPost.Body;
-                    //return post;
+        public IActionResult Edit(  [FromBody] Post editedPost ){        
+            if( ModelState.IsValid ){
+                foreach (Post post in this.posts){
+                    if( post.Id == editedPost.Id ){
+                        post.Title = editedPost.Title;
+                        post.Body = editedPost.Body;
+                        post.Autor = editedPost.Autor;
+                        //return post;
+                        return Ok(post);
+                    }
                 }
             }
 
-            return this.posts;
+            //return this.posts;
+            return ValidationProblem();
+
 
         }
 
 
         [HttpDelete("/[controller]/{id}")]
-        public List<Post> Delete([FromRoute] long id){        
+        public IActionResult Delete([FromRoute] long id){        
             //const string response = ;
     
             foreach (Post post in this.posts){
                 if( post.Id == id ){
                     this.posts.Remove(post);
-                    return this.posts;
+                    return Ok(this.posts);
+                    //return this.posts;
                 }
             }
 
-            return this.posts;
+            //return this.posts;
+            return BadRequest();
         }
 
 

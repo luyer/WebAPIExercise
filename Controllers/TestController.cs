@@ -21,16 +21,38 @@ namespace WebAPIExercise.Controllers
         public TestController()
         {
             this.customers = new List<Customer> {
-                new Customer { Id = 1, FirstName = "steve", Lastname = "Balh", Email = "correo@bla.com"  }
+                new Customer { Id = 1, FirstName = "steve", Lastname = "Balh", Email = "correo@bla.com"  },
+                new Customer { Id = 2, FirstName = "luis", Lastname = "Balh", Email = "luis@bla.com"  }
             };
         }
 
 
 
         [HttpGet]
-        public string Get(){        
-            const string response = "Hola dude!";
-            return response;
+        public IActionResult GetAll(  ){        
+            
+            return Ok(this.customers);
+
+        }
+
+
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get( [FromRoute] long id ){        
+            foreach (Customer customer in this.customers){
+                if(customer.Id == id){
+                    //OkObjectResult result = new OkObjectResult(customer);
+                    //return result;
+                    //return base.Ok(customer);
+                    return Ok(customer);
+                }
+
+            }
+            //return new NotFoundObjectResult("No encontramos naa");
+            //return base.NotFound(new {errorMessage = "No encontramos naa", errorCode = 2  });
+            //return NotFound(new {errorMessage = "No encontramos naa", errorCode = 2  });
+            return NotFound();
         }
 
      }
