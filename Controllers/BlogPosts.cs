@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using WebAPIExercise.Models;
+using WebAPIExercise.Data.Models;
 using WebAPIExercise.Services.PostService;
 
 namespace WebAPIExercise.Controllers

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WebAPIExercise.Models;
+using WebAPIExercise.Data.Models;
 
 namespace WebAPIExercise.Services.PostService
 {
