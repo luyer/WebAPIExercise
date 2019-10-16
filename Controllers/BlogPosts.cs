@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebAPIExercise.Models;
+using WebAPIExercise.Services.PostService;
 
 namespace WebAPIExercise.Controllers
 {
@@ -12,13 +13,10 @@ namespace WebAPIExercise.Controllers
     public class BlogPosts : ControllerBase
     {
 
-        private List<Post> posts;
-        public BlogPosts(){
-            this.posts = new List<Post> {
-                new Post {Id = 1, Title = "Post 1", Body = "Cuerpo del post 1", Autor = "Luis" },
-                new Post {Id = 2, Title = "Post 2", Body = "Cuerpo del post 2", Autor = "Eduardo" },
-                new Post {Id = 3, Title = "Post 3", Body = "Cuerpo del post 3", Autor = "Marcelo" }
-            };
+
+        private IPostService postsService;
+        public BlogPosts(IPostService postsService = null){
+            this.postsService = postsService ?? new InMemoryPosts();
         }
 
 
@@ -27,38 +25,26 @@ namespace WebAPIExercise.Controllers
             //const string response = ;
             //return "Endpoint Get Index()";
             //return this.posts;
-            return Ok(this.posts);
+            //return Ok(this.posts);
+            return Ok(this.postsService);
         }
 
 
         [HttpGet("/[controller]/[action]/{id}")]
         [Consumes("application/xml")]  
-        public IActionResult View([FromRoute] int id  ){        
-            foreach (Post post in this.posts){
-                if( post.Id == id ){
-                    return Ok(post);
-                }
-            }
-            return BadRequest( new {errorMessage = "el Id pasado no existe" } );
+        public IActionResult View([FromRoute] long id  ){                  
+            var serviceResponse  = this.postsService.GetById(id);
+            if( serviceResponse != null ) return Ok(serviceResponse);
+            return NotFound( new {errorMessage = "el Id pasado no existe" } );
         }
 
 
         [HttpPost]
         public IActionResult Add( [FromBody] Post newPost ){        
             
-            if( ModelState.IsValid ){
-                int newID = this.posts.Count+1;
-                Post nuevoPost = new Post {Id = newID, Title = newPost.Title  , Body = newPost.Body ,  Autor = newPost.Autor };
-                this.posts.Add(nuevoPost);
-                foreach (Post post in this.posts){
-                    if( post.Id == newID ){
-                        //return post;
-                        //return base.RedirectToRoute();
-                        return Ok(View(newID));
-
-                        
-                    }
-                }
+            if( ModelState.IsValid ){    
+                var serviceResponse = this.postsService.Add(newPost);
+                 return Ok(View(serviceResponse.Id));
             }
             return ValidationProblem();
         }
@@ -66,38 +52,22 @@ namespace WebAPIExercise.Controllers
         [HttpPut]
         public IActionResult Edit(  [FromBody] Post editedPost ){        
             if( ModelState.IsValid ){
-                foreach (Post post in this.posts){
-                    if( post.Id == editedPost.Id ){
-                        post.Title = editedPost.Title;
-                        post.Body = editedPost.Body;
-                        post.Autor = editedPost.Autor;
-                        //return post;
-                        return Ok(post);
-                    }
-                }
+                 this.postsService.Update(editedPost);
             }
-
             //return this.posts;
             return ValidationProblem();
-
-
         }
 
 
         [HttpDelete("/[controller]/{id}")]
         public IActionResult Delete([FromRoute] long id){        
             //const string response = ;
-    
-            foreach (Post post in this.posts){
-                if( post.Id == id ){
-                    this.posts.Remove(post);
-                    return Ok(this.posts);
-                    //return this.posts;
-                }
-            }
-
-            //return this.posts;
+            
+            var serviceResponse = this.postsService.Delete(id);
+            if( serviceResponse != null ) return Ok(serviceResponse);
             return BadRequest();
+            //return this.posts;
+            
         }
 
 

@@ -6,7 +6,7 @@ namespace WebAPIExercise.Models
     {
         public long Id { get; set; }
         
-        [MaxLength(10)]
+        [Required] [MaxLength(10)]
         public string Title { get; set; }
         
         [MaxLength(30)]

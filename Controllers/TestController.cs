@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using WebAPIExercise.Models;
+using WebAPIExercise.Services.CustomerService;
 
 namespace WebAPIExercise.Controllers
 {
@@ -16,22 +17,25 @@ namespace WebAPIExercise.Controllers
     public class TestController : ControllerBase
     { 
 
-        private List<Customer> customers;
+        private ICustomerService customerService;
 
-        public TestController()
+        public TestController(ICustomerService customerService = null )
         {
+            /* 
             this.customers = new List<Customer> {
                 new Customer { Id = 1, FirstName = "steve", Lastname = "Balh", Email = "correo@bla.com"  },
                 new Customer { Id = 2, FirstName = "luis", Lastname = "Balh", Email = "luis@bla.com"  }
             };
-        }
+            */  
+            this.customerService = customerService ?? new InMemoryCustomerService();
 
+        }
 
 
         [HttpGet]
         public IActionResult GetAll(  ){        
             
-            return Ok(this.customers);
+            return Ok(this.customerService);
 
         }
 
@@ -40,7 +44,7 @@ namespace WebAPIExercise.Controllers
         [HttpGet]
         [Route("{id}")]
         public IActionResult Get( [FromRoute] long id ){        
-            foreach (Customer customer in this.customers){
+            /*foreach (Customer customer in this.customerService){
                 if(customer.Id == id){
                     //OkObjectResult result = new OkObjectResult(customer);
                     //return result;
@@ -53,6 +57,11 @@ namespace WebAPIExercise.Controllers
             //return base.NotFound(new {errorMessage = "No encontramos naa", errorCode = 2  });
             //return NotFound(new {errorMessage = "No encontramos naa", errorCode = 2  });
             return NotFound();
+            */
+
+             return Ok(this.customerService.GetOne(id));
+
+
         }
 
      }
