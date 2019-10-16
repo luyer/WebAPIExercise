@@ -15,8 +15,9 @@ namespace WebAPIExercise.Controllers
 
 
         private IPostService postsService;
-        public BlogPosts(IPostService postsService = null){
-            this.postsService = postsService ?? new InMemoryPosts();
+        public BlogPosts(IPostService postsService){
+            //this.postsService = postsService ?? new InMemoryPosts();
+            this.postsService = postsService;
         }
 
 

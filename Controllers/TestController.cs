@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
-using WebAPIExercise.Models;
+using WebAPIExercise.Data.Models;
+//using WebAPIExcercise.Data.Models;
+
+
 using WebAPIExercise.Services.CustomerService;
 
 namespace WebAPIExercise.Controllers

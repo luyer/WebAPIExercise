@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WebAPIExercise.Data\WebAPIExcercise.Data.csproj" />
   </ItemGroup>
 
 </Project>

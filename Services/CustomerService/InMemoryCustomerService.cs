@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using WebAPIExercise.Models;
+//using WebAPIExercise.Models;
+using WebAPIExercise.Data.Models;
 
 namespace WebAPIExercise.Services.CustomerService
 {
@@ -19,13 +20,13 @@ namespace WebAPIExercise.Services.CustomerService
         
 
         public IList<Customer> GetAll(){
-            
+             throw new System.NotImplementedException();
         }
         public Customer GetOne(long id){
-
+             throw new System.NotImplementedException();
         }
         public Customer Add(Customer newCustomer){
-            
+            throw new System.NotImplementedException();
         }
 
         public void Update(Customer updatedCustomer){

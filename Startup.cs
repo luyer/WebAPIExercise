@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebAPIExercise.Services.PostService;
 
 // System.Threading.Tasks.Task
 
@@ -29,6 +30,7 @@ namespace WebAPIExercise
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddXmlSerializerFormatters();
+            services.AddSingleton<IPostService, InMemoryPosts>();
         }
 
         private static void HandleMapHello(IApplicationBuilder app)

@@ -13,7 +13,7 @@ namespace WebAPIExercise.Services.PostService
 
          void Update(Post updatedPost);
 
-         void Delete(Post deletedPost);
+         //void Delete(Post deletedPost);
         IList<Post> Delete(long id);
     }
 }
