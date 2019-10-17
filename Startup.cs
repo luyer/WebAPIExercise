@@ -32,8 +32,14 @@ namespace WebAPIExercise
             //AddScoped por la session de usuario?
             //AddTransient stateless, lo toma hace lo suyo y se olvida del todo 
             services.AddScoped<ICustomerService, InMemoryDatabaseService>(); // este es el ejemplo de steve
+            
             services.AddDbContext<WebAPIExerciseContext>(options => {
-                options.UseInMemoryDatabase("WebAPIStarter");
+                
+                //options.UseInMemoryDatabase("WebAPIStarter"); // <-- Esto usaba la DB de InMemory
+                options.UseSqlite(
+                    Configuration.GetConnectionString("WebAPIExerciseDatabase"), // Conexcion string
+                    m => m.MigrationsAssembly("WebAPIExercise") // Action function, toma el builder y se le especifica donde guardar las migraciones
+                );
 
             });
         }
