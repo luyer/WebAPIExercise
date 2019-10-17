@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using WebAPIExercise.Services.PostService;
+using WebAPIExercise.Data;
+using Microsoft.EntityFrameworkCore;
+using WebAPIExercise.Services.CustomerService;
 
 // System.Threading.Tasks.Task
 
@@ -30,7 +26,16 @@ namespace WebAPIExercise
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddXmlSerializerFormatters();
-            services.AddSingleton<IPostService, InMemoryPosts>();
+            //services.AddSingleton<IPostService, InMemoryPosts>();  // este es el mio
+            services.AddScoped<IPostService, InMemoryPostDb>();  // este es el mio
+            //AddSingleton por todo el siclo de vida de la app
+            //AddScoped por la session de usuario?
+            //AddTransient stateless, lo toma hace lo suyo y se olvida del todo 
+            services.AddScoped<ICustomerService, InMemoryDatabaseService>(); // este es el ejemplo de steve
+            services.AddDbContext<WebAPIExerciseContext>(options => {
+                options.UseInMemoryDatabase("WebAPIStarter");
+
+            });
         }
 
         private static void HandleMapHello(IApplicationBuilder app)

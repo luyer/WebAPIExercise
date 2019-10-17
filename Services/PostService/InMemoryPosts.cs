@@ -59,12 +59,13 @@ namespace WebAPIExercise.Services.PostService
         }
 
 
-        public IList<Post> Delete(long id)
+        public Post Delete(long id)
         {
              foreach (Post post in this.posts){
                 if( post.Id == id ){
                     this.posts.Remove(post);
-                    return this.posts;
+                    return post;
+                    //return null;
                 }
             }
             return null;           

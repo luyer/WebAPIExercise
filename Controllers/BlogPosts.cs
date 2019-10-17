@@ -27,7 +27,7 @@ namespace WebAPIExercise.Controllers
             //return "Endpoint Get Index()";
             //return this.posts;
             //return Ok(this.posts);
-            return Ok(this.postsService);
+            return Ok(this.postsService.GetAll());
         }
 
 
@@ -64,10 +64,16 @@ namespace WebAPIExercise.Controllers
         public IActionResult Delete([FromRoute] long id){        
             //const string response = ;
             
-            var serviceResponse = this.postsService.Delete(id);
-            if( serviceResponse != null ) return Ok(serviceResponse);
-            return BadRequest();
+            
+            //if( serviceResponse != null ) return Ok(serviceResponse);
+            // return BadRequest();
             //return this.posts;
+            var serviceResponse  = this.postsService.GetById(id);
+            if( serviceResponse != null ){
+                this.postsService.Delete(id);
+                return Ok(serviceResponse);
+            } 
+            return NotFound( new {errorMessage = "el Id pasado no existe" } );
             
         }
 

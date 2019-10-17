@@ -14,6 +14,6 @@ namespace WebAPIExercise.Services.PostService
          void Update(Post updatedPost);
 
          //void Delete(Post deletedPost);
-        IList<Post> Delete(long id);
+        Post Delete(long id);
     }
 }
