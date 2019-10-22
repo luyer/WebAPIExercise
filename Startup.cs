@@ -67,6 +67,8 @@ namespace WebAPIExercise
                 app.UseDeveloperExceptionPage();
             }
 
+            new DatabaseSeed(app).Initialize(); //WooooW!!
+
             app.Map("/hello", HandleMapHello);
 
             app.UseHttpsRedirection();
